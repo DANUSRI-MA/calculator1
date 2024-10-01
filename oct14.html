@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #9bb65100;
+        }
+        .calculator {
+            background-color: #181a1800;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(12, 28, 22, 0.933);
+        }
+        .calculator input {
+            width: 100%;
+            height: 50px;
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 10px;
+            border: none;
+            background-color: #e711a728;
+            border-radius: 5px;
+            padding-right: 10px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            grid-gap: 10px;
+        }
+        .buttons button {
+            height: 60px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #3e4ee086;
+            color: white;
+        }
+        .buttons button.operator {
+            background-color: #3e4ee086 ;
+        }
+        .buttons button.equals {
+            grid-column: span 2;
+            background-color: #3e4ee086;
+        }
+        .buttons button.clear {
+            background-color: #4a47ff7e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="display" disabled>
+    <div class="buttons">
+        <button onclick="clearDisplay()" class="clear">C</button>
+        <button onclick="appendNumber('7')">7</button>
+        <button onclick="appendNumber('8')">8</button>
+        <button onclick="appendNumber('9')">9</button>
+        <button onclick="chooseOperation('/')">/</button>
+        <button onclick="appendNumber('4')">4</button>
+        <button onclick="appendNumber('5')">5</button>
+        <button onclick="appendNumber('6')">6</button>
+        <button onclick="chooseOperation('*')">*</button>
+        <button onclick="appendNumber('1')">1</button>
+        <button onclick="appendNumber('2')">2</button>
+        <button onclick="appendNumber('3')">3</button>
+        <button onclick="chooseOperation('-')">-</button>
+        <button onclick="appendNumber('0')">0</button>
+        <button onclick="appendNumber('.')">.</button>
+        <button onclick="chooseOperation('+')" class="operator">+</button>
+        <button onclick="calculate()" class="equals">=</button>
+    </div>
+</div>
+
+<script>
+    let display = document.getElementById('display');
+    let currentOperation = '';
+    let previousNumber = '';
+    let currentNumber = '';
+
+    function appendNumber(number) {
+        currentNumber += number;
+        display.value = currentNumber;
+    }
+
+    function chooseOperation(operation) {
+        if (currentNumber === '') return;
+        if (previousNumber !== '') {
+            calculate();
+        }
+        currentOperation = operation;
+        previousNumber = currentNumber;
+        currentNumber = '';
+    }
+
+    function calculate() {
+        let result;
+        const prev = parseFloat(previousNumber);
+        const current = parseFloat(currentNumber);
+
+        if (isNaN(prev) || isNaN(current)) return;
+
+        switch (currentOperation) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case '*':
+                result = prev * current;
+                break;
+            case '/':
+                result = prev / current;
+                break;
+            default:
+                return;
+        }
+
+        currentNumber = result;
+        currentOperation = '';
+        previousNumber = '';
+        display.value = currentNumber;
+    }
+
+    function clearDisplay() {
+        currentNumber = '';
+        previousNumber = '';
+        currentOperation = '';
+        display.value = '';
+    }
+</script>
+
+</body>
+</html>
